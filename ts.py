@@ -35,10 +35,16 @@ df_merged = reduce(lambda  left,right: pd.merge(left,right,on=['Date'], how='out
 #df_merged[['brent', 'unl87', 'ulsd', 'fo01', 'fo03']].plot()
 #plt.show()
 
-print(df_merged.head())
-
 df_merged.reset_index(inplace=True)
 df_merged['year'] = [d.year for d in df_merged['Date']]
 df_merged['month'] = [d.strftime('%b') for d in df_merged['Date']]
 
-print(df_merged.head())
+years = df_merged['year'].unique()
+print(years)
+print(df_merged.head(40))
+plt.figure(figsize=(16,12), dpi=80)
+for i, y in enumerate(years):
+    if i > 0:
+        plt.plot('month', 'brent', data=df_merged.loc[df_merged.year==y, :], label=y)
+
+plt.show()
