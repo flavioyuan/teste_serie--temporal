@@ -37,15 +37,23 @@ df_merged = reduce(lambda  left,right: pd.merge(left,right,on=['Date'], how='out
 
 
 df_merged['year'] = [d.year for d in df_merged['Date']]
-df_merged['month'] = [d.strftime('%b') for d in df_merged['Date']]
+df_merged['month'] = [d.strftime('%m') for d in df_merged['Date']]
 
 years = df_merged['year'].unique()
 month = df_merged['month'].unique()
 
 df_m_y = df_merged.groupby(['year', 'month']).mean()
 df_m_y.reset_index(inplace=True)
-#print(years)
-#print(df_m_y.head(20))
+print(years)
+print(df_m_y)
 
-#plt.figure(figsize=(16,12), dpi=80)
-print(df_m_y[['year', 'month', 'brent']])
+#print(df_m_y[['year', 'month', 'brent']])
+
+plt.figure(figsize=(16,12), dpi=80)
+
+for i, y in enumerate(years):
+    plt.plot('month', 'brent', data=df_m_y.loc[df_m_y.year==y, :], label=y)
+    #if i > 0 :
+    #    plt.plot('month', 'brent', data=df_m_y.loc[df_m_y.year==y, :], label=y)        
+
+plt.show()
